@@ -2,7 +2,7 @@ import git
 
 url = "https://github.com/PhonePe/pulse.git"
 
-folder = "Phonepe-Pulse-Data-Visualization-and-Exploration_-A-User-Friendly-Tool-Using-Streamlit-and-Plotly"
+folder = "Phonepe"
 
 git.Repo.clone_from(url,folder)
 
