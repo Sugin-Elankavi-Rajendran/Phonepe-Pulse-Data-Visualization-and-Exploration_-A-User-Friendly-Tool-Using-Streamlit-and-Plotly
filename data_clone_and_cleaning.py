@@ -8,12 +8,17 @@ from path import map_transaction_path
 from path import map_user_path
 from path import top_transaction_path
 from path import top_user_path
+from path import main_path
 
-#url = "https://github.com/PhonePe/pulse.git"
+file = main_path
+file_list = os.listdir(file)
 
-#folder = "Phonepe"
-
-#git.Repo.clone_from(url,folder)
+if "Phonepe" in file_list:
+    print("Phonepe Repository already cloned")
+else:
+    url = "https://github.com/PhonePe/pulse.git"
+    folder = "Phonepe"
+    git.Repo.clone_from(url,folder)
 
 ##################
 
