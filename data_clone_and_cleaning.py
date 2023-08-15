@@ -4,6 +4,7 @@ import os
 import json
 from path import aggregated_transaction_path
 from path import aggregated_user_path
+from path import map_transaction_path
 
 #url = "https://github.com/PhonePe/pulse.git"
 
@@ -93,5 +94,45 @@ for aggregated_state_year in aggregated_user_state_list:
                 pass
 
 df_aggregated_users = pd.DataFrame(aggregated_user)
+
+##############
+
+file3 = map_transaction_path
+map_transaction_state_list = os.listdir(file3)
+
+map_transaction = {
+    'State': [], 
+    'Year': [], 
+    'Quarter': [], 
+    'District': [], 
+    'Transaction_Count': [], 
+    'Transaction_Amount': []
+}
+
+for map_state in map_transaction_state_list:
+    a1 = os.path.join(file3,map_state)
+    map_year_list = os.listdir(a1)
+
+    for map_state_year_data in map_year_list:
+        a2 = os.path.join(a1,map_state_year_data)
+        map_year_list_data = os.listdir(a2)
+        
+        for map_state_year_data_file in map_year_list_data:
+            a3 = os.path.join(a2,map_state_year_data_file)
+            data = open(a3,"r")
+            files3 = json.load(data)
+
+            for details in files3 ["data"]["hoverDataList"]:
+                district_name = details["name"]
+                mt_count = details ["metric"][0]["count"]
+                mt_amount = details ["metric"][0]["amount"]
+                map_transaction["State"].append(map_state)
+                map_transaction["Year"].append(map_state_year_data)
+                map_transaction["Quarter"].append(int(map_state_year_data_file.strip(".json")))
+                map_transaction["Transaction_type"].append(district_name)
+                map_transaction["Transaction_count"].append(mt_count)
+                map_transaction["Transaction_amount"].append(mt_amount)
+
+df_map_transactions = pd.DataFrame(map_transaction)
 
 ##############
