@@ -129,9 +129,9 @@ for map_state in map_transaction_state_list:
                 map_transaction["State"].append(map_state)
                 map_transaction["Year"].append(map_state_year_data)
                 map_transaction["Quarter"].append(int(map_state_year_data_file.strip(".json")))
-                map_transaction["Transaction_type"].append(district_name)
-                map_transaction["Transaction_count"].append(mt_count)
-                map_transaction["Transaction_amount"].append(mt_amount)
+                map_transaction["District"].append(district_name)
+                map_transaction["Transaction_Count"].append(mt_count)
+                map_transaction["Transaction_Amount"].append(mt_amount)
 
 df_map_transactions = pd.DataFrame(map_transaction)
 
