@@ -6,6 +6,7 @@ from path import aggregated_transaction_path
 from path import aggregated_user_path
 from path import map_transaction_path
 from path import map_user_path
+from path import top_transaction_path
 
 
 #url = "https://github.com/PhonePe/pulse.git"
@@ -173,5 +174,45 @@ for map_state in map_user_state_list:
                 map_user["Registered_User"].append(registered_user)
 
 df_map_users = pd.DataFrame(map_user)
+
+###############
+
+file5 = top_transaction_path
+top_transaction_state_list = os.listdir(file5)
+
+top_transaction = {
+    'State': [], 
+    'Year': [], 
+    'Quarter': [], 
+    'District_Pincode': [], 
+    'Transaction_count': [], 
+    'Transaction_amount': []
+}
+
+for top_state in top_transaction_state_list:
+    a1 = os.path.join(file5,top_state)
+    top_year_list = os.listdir(a1)
+
+    for top_state_year_data in top_year_list:
+        a2 = os.path.join(a1,top_state_year_data)
+        top_year_list_data = os.listdir(a2)
+        
+        for top_state_year_data_file in top_year_list_data:
+            a3 = os.path.join(a2,top_state_year_data_file)
+            data = open(a3,"r")
+            files5 = json.load(data)
+
+            for details in files5["data"]["pincodes"]:
+                entity_name = details["entityName"]
+                top_count = details["metric"]["count"]
+                top_amount = details["metric"]["amount"]
+                top_transaction["State"].append(top_state)
+                top_transaction["Year"].append(top_state_year_data)
+                top_transaction["Quarter"].append(int(top_state_year_data_file.strip(".json")))
+                top_transaction["District_Pincode"].append(entity_name)
+                top_transaction['Transaction_count'].append(top_count)
+                top_transaction['Transaction_amount'].append(top_amount)
+
+df_top_transactions = pd.DataFrame(top_transaction)
 
 ###############
