@@ -5,6 +5,8 @@ import json
 from path import aggregated_transaction_path
 from path import aggregated_user_path
 from path import map_transaction_path
+from path import map_user_path
+
 
 #url = "https://github.com/PhonePe/pulse.git"
 
@@ -136,3 +138,40 @@ for map_state in map_transaction_state_list:
 df_map_transactions = pd.DataFrame(map_transaction)
 
 ##############
+
+file4 = map_user_path
+map_user_state_list = os.listdir(file4)
+
+map_user = {
+    "State": [], 
+    "Year": [], 
+    "Quarter": [], 
+    "District": [], 
+    "Registered_User": []
+}
+
+for map_state in map_user_state_list:
+    a1 = os.path.join(file4,map_state)
+    map_year_list = os.listdir(a1)
+
+    for map_state_year_data in map_year_list:
+        a2 = os.path.join(a1,map_state_year_data)
+        map_year_list_data = os.listdir(a2)
+        
+        for map_state_year_data_file in map_year_list_data:
+            a3 = os.path.join(a2,map_state_year_data_file)
+            data = open(a3,"r")
+            files4 = json.load(data)
+
+            for details in files4["data"]["hoverData"].items():
+                district = details[0]
+                registered_user = details[1]["registeredUsers"]
+                map_user["State"].append(map_state)
+                map_user["Year"].append(map_state_year_data)
+                map_user["Quarter"].append(int(map_state_year_data_file.strip(".json")))
+                map_user["District"].append(district)
+                map_user["Registered_User"].append(registered_user)
+
+df_map_users = pd.DataFrame(map_user)
+
+###############
