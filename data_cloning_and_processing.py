@@ -264,8 +264,7 @@ df_top_users = pd.DataFrame(top_user)
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="12345",
-    database="project11"
+    password="12345"
 )
     
 cursor = connection.cursor()
