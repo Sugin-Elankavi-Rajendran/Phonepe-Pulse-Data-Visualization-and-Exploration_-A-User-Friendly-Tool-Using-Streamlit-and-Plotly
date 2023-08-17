@@ -9,6 +9,8 @@ from path import map_user_path
 from path import top_transaction_path
 from path import top_user_path
 from path import main_path
+import mysql
+import mysql.connector
 
 file = main_path
 file_list = os.listdir(file)
@@ -259,4 +261,13 @@ df_top_users = pd.DataFrame(top_user)
 
 ######################
 
+connection = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="12345",
+    database="project11"
+)
+    
+cursor = connection.cursor()
+cursor.execute("CREATE DATABASE IF NOT EXISTS phonepe")
                 
