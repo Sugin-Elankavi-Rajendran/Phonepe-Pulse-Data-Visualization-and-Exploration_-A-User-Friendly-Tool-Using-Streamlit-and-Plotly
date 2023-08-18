@@ -272,5 +272,8 @@ connection = mysql.connector.connect(
 cursor = connection.cursor()
 cursor.execute("CREATE DATABASE IF NOT EXISTS phonepe")
 
+cursor.close()
+connection.close()
+
 engine = create_engine("mysql+mysqlconnector://root:12345@localhost/phonepe",echo = True) 
                
