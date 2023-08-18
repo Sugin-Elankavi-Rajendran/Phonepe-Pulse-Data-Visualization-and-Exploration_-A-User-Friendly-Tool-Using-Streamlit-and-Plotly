@@ -11,6 +11,8 @@ from path import top_user_path
 from path import main_path
 import mysql
 import mysql.connector
+import sqlalchemy
+from sqlalchemy import create_engine
 
 file = main_path
 file_list = os.listdir(file)
@@ -269,4 +271,6 @@ connection = mysql.connector.connect(
     
 cursor = connection.cursor()
 cursor.execute("CREATE DATABASE IF NOT EXISTS phonepe")
-                
+
+engine = create_engine("mysql+mysqlconnector://root:12345@localhost/phonepe",echo = True) 
+               
