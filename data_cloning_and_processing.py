@@ -295,3 +295,23 @@ df_aggregated_transactions.to_sql(
         'Transaction_amount': sqlalchemy.types.FLOAT(precision=5, asdecimal=True)
     }
 )
+
+#############################
+
+df_aggregated_users.to_sql(
+    'aggregated_user', 
+    engine, 
+    if_exists = 'replace', 
+    index=False,
+    dtype={
+        'State': sqlalchemy.types.VARCHAR(length=50), 
+        'Year': sqlalchemy.types.Integer, 
+        'Quater': sqlalchemy.types.Integer,
+        'Brands': sqlalchemy.types.VARCHAR(length=50), 
+        'User_Count': sqlalchemy.types.Integer, 
+        'User_Percentage': sqlalchemy.types.FLOAT(precision=5, asdecimal=True)
+    }
+)
+
+#########################
+
