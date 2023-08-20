@@ -364,3 +364,19 @@ df_top_transactions.to_sql(
 
 ############################
 
+df_top_users.to_sql(
+    'top_users', 
+    engine, 
+    if_exists = 'replace', 
+    index=False,
+    dtype={
+        'State': sqlalchemy.types.VARCHAR(length=50), 
+        'Year': sqlalchemy.types.Integer, 
+        'Quarter': sqlalchemy.types.Integer,                           
+        'District_Pincode': sqlalchemy.types.Integer, 
+        'Registered_User': sqlalchemy.types.Integer
+    }
+)
+
+########################
+
