@@ -347,3 +347,20 @@ df_map_users.to_sql(
 
 ##############################
 
+df_top_transactions.to_sql(
+    'top_transactions', 
+    engine, 
+    if_exists = 'replace', 
+    index=False,
+    dtype={
+        'State': sqlalchemy.types.VARCHAR(length=50), 
+        'Year': sqlalchemy.types.Integer, 
+        'Quarter': sqlalchemy.types.Integer,   
+        'District_Pincode': sqlalchemy.types.Integer,
+        'Transaction_count': sqlalchemy.types.Integer, 
+        'Transaction_amount': sqlalchemy.types.FLOAT(precision=5, asdecimal=True)
+    }
+)
+
+############################
+
