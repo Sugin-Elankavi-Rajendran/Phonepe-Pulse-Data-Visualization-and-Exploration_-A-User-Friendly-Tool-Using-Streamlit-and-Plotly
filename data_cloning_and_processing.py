@@ -275,5 +275,23 @@ cursor.execute("CREATE DATABASE IF NOT EXISTS phonepe")
 cursor.close()
 connection.close()
 
+###########################
+
 engine = create_engine("mysql+mysqlconnector://root:12345@localhost/phonepe",echo = True) 
-               
+
+###########################
+
+df_aggregated_transactions.to_sql(
+    'aggregated_transactions',        
+    engine,                           
+    if_exists='replace',              
+    index=False,                      
+    d_type={                           
+        'State': sqlalchemy.types.VARCHAR(length=50),
+        'Year': sqlalchemy.types.Integer,
+        'Quater': sqlalchemy.types.Integer,
+        'Transaction_type': sqlalchemy.types.VARCHAR(length=50),
+        'Transaction_count': sqlalchemy.types.Integer,
+        'Transaction_amount': sqlalchemy.types.FLOAT(precision=5, asdecimal=True)
+    }
+)
