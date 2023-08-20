@@ -289,7 +289,7 @@ df_aggregated_transactions.to_sql(
     d_type={                           
         'State': sqlalchemy.types.VARCHAR(length=50),
         'Year': sqlalchemy.types.Integer,
-        'Quater': sqlalchemy.types.Integer,
+        'Quarter': sqlalchemy.types.Integer,
         'Transaction_type': sqlalchemy.types.VARCHAR(length=50),
         'Transaction_count': sqlalchemy.types.Integer,
         'Transaction_amount': sqlalchemy.types.FLOAT(precision=5, asdecimal=True)
@@ -306,7 +306,7 @@ df_aggregated_users.to_sql(
     dtype={
         'State': sqlalchemy.types.VARCHAR(length=50), 
         'Year': sqlalchemy.types.Integer, 
-        'Quater': sqlalchemy.types.Integer,
+        'Quarter': sqlalchemy.types.Integer,
         'Brands': sqlalchemy.types.VARCHAR(length=50), 
         'User_Count': sqlalchemy.types.Integer, 
         'User_Percentage': sqlalchemy.types.FLOAT(precision=5, asdecimal=True)
@@ -322,7 +322,7 @@ df_map_transactions.to_sql(
     dtype={
         'State': sqlalchemy.types.VARCHAR(length=50), 
         'Year': sqlalchemy.types.Integer, 
-        'Quater': sqlalchemy.types.Integer, 
+        'Quarter': sqlalchemy.types.Integer, 
         'District': sqlalchemy.types.VARCHAR(length=50), 
         'Transaction_Count': sqlalchemy.types.Integer, 
         'Transaction_Amount': sqlalchemy.types.FLOAT(precision=5, asdecimal=True)
@@ -330,4 +330,20 @@ df_map_transactions.to_sql(
 )
 
 ###########################
+
+df_map_users.to_sql(
+    'map_users', 
+    engine, 
+    if_exists = 'replace', 
+    index=False,
+    dtype={
+        'State': sqlalchemy.types.VARCHAR(length=50), 
+        'Year': sqlalchemy.types.Integer, 
+        'Quarter': sqlalchemy.types.Integer, 
+        'District': sqlalchemy.types.VARCHAR(length=50), 
+        'Registered_User': sqlalchemy.types.Integer 
+    }
+)
+
+##############################
 
