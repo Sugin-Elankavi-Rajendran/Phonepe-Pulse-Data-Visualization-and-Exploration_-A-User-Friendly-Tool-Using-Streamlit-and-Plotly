@@ -299,7 +299,7 @@ df_aggregated_transactions.to_sql(
 #############################
 
 df_aggregated_users.to_sql(
-    'aggregated_user', 
+    'aggregated_users', 
     engine, 
     if_exists = 'replace', 
     index=False,
@@ -314,4 +314,20 @@ df_aggregated_users.to_sql(
 )
 
 #########################
+
+df_map_transactions.to_sql(
+    'map_transactions', 
+    engine, if_exists = 'replace', 
+    index=False,
+    dtype={
+        'State': sqlalchemy.types.VARCHAR(length=50), 
+        'Year': sqlalchemy.types.Integer, 
+        'Quater': sqlalchemy.types.Integer, 
+        'District': sqlalchemy.types.VARCHAR(length=50), 
+        'Transaction_Count': sqlalchemy.types.Integer, 
+        'Transaction_Amount': sqlalchemy.types.FLOAT(precision=5, asdecimal=True)
+    }
+)
+
+###########################
 
