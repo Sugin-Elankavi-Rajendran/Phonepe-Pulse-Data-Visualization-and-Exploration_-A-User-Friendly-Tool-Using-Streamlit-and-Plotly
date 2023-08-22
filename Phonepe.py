@@ -15,15 +15,6 @@ cursor = connection.cursor()
 
 #####################
 
-st.markdown(
-    """
-    <style>
-    body {
-        background-color: violet;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-st.header(':white[Phonepe Pulse Data Visualization ]')
+st.set_page_config(layout='wide')
+st.header('Phonepe Data')
+st.write("The following data is from the years 2018-2022")
