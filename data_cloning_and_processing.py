@@ -277,7 +277,7 @@ connection.close()
 
 ###########################
 
-engine = create_engine("mysql+mysqlconnector://root:12345@localhost/phonepe",echo = True) 
+engine = create_engine("mysql+mysqlconnector://root:12345@localhost/phonepe",echo = False) 
 
 ###########################
 
@@ -286,7 +286,7 @@ df_aggregated_transactions.to_sql(
     engine,                           
     if_exists='replace',              
     index=False,                      
-    d_type={                           
+    dtype={                           
         'State': sqlalchemy.types.VARCHAR(length=50),
         'Year': sqlalchemy.types.Integer,
         'Quarter': sqlalchemy.types.Integer,
@@ -303,7 +303,7 @@ df_aggregated_users.to_sql(
     engine, 
     if_exists = 'replace', 
     index=False,
-    d_type={
+    dtype={
         'State': sqlalchemy.types.VARCHAR(length=50), 
         'Year': sqlalchemy.types.Integer, 
         'Quarter': sqlalchemy.types.Integer,
@@ -319,7 +319,7 @@ df_map_transactions.to_sql(
     'map_transactions', 
     engine, if_exists = 'replace', 
     index=False,
-    d_type={
+    dtype={
         'State': sqlalchemy.types.VARCHAR(length=50), 
         'Year': sqlalchemy.types.Integer, 
         'Quarter': sqlalchemy.types.Integer, 
@@ -336,7 +336,7 @@ df_map_users.to_sql(
     engine, 
     if_exists = 'replace', 
     index=False,
-    d_type={
+    dtype={
         'State': sqlalchemy.types.VARCHAR(length=50), 
         'Year': sqlalchemy.types.Integer, 
         'Quarter': sqlalchemy.types.Integer, 
@@ -352,7 +352,7 @@ df_top_transactions.to_sql(
     engine, 
     if_exists = 'replace', 
     index=False,
-    d_type={
+    dtype={
         'State': sqlalchemy.types.VARCHAR(length=50), 
         'Year': sqlalchemy.types.Integer, 
         'Quarter': sqlalchemy.types.Integer,   
@@ -369,7 +369,7 @@ df_top_users.to_sql(
     engine, 
     if_exists = 'replace', 
     index=False,
-    d_type={
+    dtype={
         'State': sqlalchemy.types.VARCHAR(length=50), 
         'Year': sqlalchemy.types.Integer, 
         'Quarter': sqlalchemy.types.Integer,                           

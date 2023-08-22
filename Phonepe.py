@@ -15,3 +15,15 @@ cursor = connection.cursor()
 
 #####################
 
+st.markdown(
+    """
+    <style>
+    body {
+        background-color: violet;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+st.header(':white[Phonepe Pulse Data Visualization ]')
