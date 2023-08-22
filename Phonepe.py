@@ -17,4 +17,7 @@ cursor = connection.cursor()
 
 st.set_page_config(layout='wide')
 st.header('Phonepe Data')
-st.write("The following data is from the years 2018-2022")
+st.write("The following data is from the year 2018-2022:")
+
+##################
+
