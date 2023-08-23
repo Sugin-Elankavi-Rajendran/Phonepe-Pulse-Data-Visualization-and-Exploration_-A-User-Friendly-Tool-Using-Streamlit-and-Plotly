@@ -31,7 +31,7 @@ if option == 'All of India':
      with tab1:
         column1, column2, column3 = st.columns(3)
         with column1:
-            selected_year = st.selectbox('**Select Year**', ('2018','2019','2020','2021','2022'))
+            selected_year = st.selectbox('**Select Year**', ('2018','2019','2020','2021','2022'),key='selected_year')
         with column2:
             selected_Quarter = st.selectbox('**Select Quarter**', ('1st Quarter','2nd Quarter','3rd Quarter','4th Quarter'),key='selected_Quarter')
         with column3:
