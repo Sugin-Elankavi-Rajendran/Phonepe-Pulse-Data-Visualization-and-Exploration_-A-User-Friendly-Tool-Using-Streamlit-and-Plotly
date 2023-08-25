@@ -1,6 +1,11 @@
 import streamlit as st
 import mysql
 import mysql.connector
+import pandas as pd
+import numpy as np
+import json
+import requests
+import subprocess
 
 ################
 
@@ -35,41 +40,30 @@ if option == 'All of India':
         with column2:
             selected_Quarter = st.selectbox('**Select Quarter**', ('1st Quarter','2nd Quarter','3rd Quarter','4th Quarter'),key='selected_Quarter')
         with column3:
-            top_ten_categories = st.selectbox('**Select Transaction type**', ('Recharge & bill payments','Peer-to-peer payments',
+            transaction_type = st.selectbox('**Select Transaction type**', ('Recharge & bill payments','Peer-to-peer payments',
             'Merchant payments','Financial Services','Others'),key='top_ten_categories')
-        
-        # SQL Query
+               
+        cursor.execute(f"SELECT State, Transaction_amount FROM aggregated_transactions WHERE Year = '{selected_year}' AND Quarter = '{selected_Quarter}' AND Transaction_type = '{transaction_type}';")
+        query_result = cursor.fetchall()
+        df_query_result = pd.DataFrame(np.array(query_result), columns=['State', 'Transaction_amount'])
+        modified_df_query_result = df_query_result.set_index(pd.Index(range(1, len(df_query_result)+1)))
 
-        # Transaction Analysis bar chart query
-        cursor.execute(f"SELECT State, Transaction_amount FROM aggregated_transaction WHERE Year = '{in_tr_yr}' AND Quarter = '{in_tr_qtr}' AND Transaction_type = '{in_tr_tr_typ}';")
-        in_tr_tab_qry_rslt = cursor.fetchall()
-        df_in_tr_tab_qry_rslt = pd.DataFrame(np.array(in_tr_tab_qry_rslt), columns=['State', 'Transaction_amount'])
-        df_in_tr_tab_qry_rslt1 = df_in_tr_tab_qry_rslt.set_index(pd.Index(range(1, len(df_in_tr_tab_qry_rslt)+1)))
+        cursor.execute(f"SELECT State, Transaction_count, Transaction_amount FROM aggregated_transactions WHERE Year = '{selected_year}' AND Quarter = '{selected_Quarter}' AND Transaction_type = '{transaction_type}';")
+        table_query_result = cursor.fetchall()
+        df_table_query_result = pd.DataFrame(np.array(table_query_result), columns=['State','Transaction_count','Transaction_amount'])
+        modified_df_table_query_result = df_table_query_result.set_index(pd.Index(range(1, len(df_table_query_result)+1)))
 
-        # Transaction Analysis table query
-        cursor.execute(f"SELECT State, Transaction_count, Transaction_amount FROM aggregated_transaction WHERE Year = '{in_tr_yr}' AND Quarter = '{in_tr_qtr}' AND Transaction_type = '{in_tr_tr_typ}';")
-        in_tr_anly_tab_qry_rslt = cursor.fetchall()
-        df_in_tr_anly_tab_qry_rslt = pd.DataFrame(np.array(in_tr_anly_tab_qry_rslt), columns=['State','Transaction_count','Transaction_amount'])
-        df_in_tr_anly_tab_qry_rslt1 = df_in_tr_anly_tab_qry_rslt.set_index(pd.Index(range(1, len(df_in_tr_anly_tab_qry_rslt)+1)))
+        cursor.execute(f"SELECT SUM(Transaction_amount), AVG(Transaction_amount) FROM aggregated_transactions WHERE Year = '{selected_year}' AND Quarter = '{selected_Quarter}' AND Transaction_type = '{transaction_type}';")
+        amount_query_result = cursor.fetchall()
+        df_amount_query_result = pd.DataFrame(np.array(amount_query_result), columns=['Total','Average'])
+        modified_df_amount_query_result = df_amount_query_result.set_index(['Average'])
+ 
+        cursor.execute(f"SELECT SUM(Transaction_count), AVG(Transaction_count) FROM aggregated_transaction WHERE Year = '{selected_year}' AND Quarter = '{selected_Quarter}' AND Transaction_type = '{transaction_type}';")
+        count_query_result = cursor.fetchall()
+        df_count_query_result = pd.DataFrame(np.array(count_query_result), columns=['Total','Average'])
+        modified_df_count_query_result = df_count_query_result.set_index(['Average'])
 
-        # Total Transaction Amount table query
-        cursor.execute(f"SELECT SUM(Transaction_amount), AVG(Transaction_amount) FROM aggregated_transaction WHERE Year = '{in_tr_yr}' AND Quarter = '{in_tr_qtr}' AND Transaction_type = '{in_tr_tr_typ}';")
-        in_tr_am_qry_rslt = cursor.fetchall()
-        df_in_tr_am_qry_rslt = pd.DataFrame(np.array(in_tr_am_qry_rslt), columns=['Total','Average'])
-        df_in_tr_am_qry_rslt1 = df_in_tr_am_qry_rslt.set_index(['Average'])
-        
-        # Total Transaction Count table query
-        cursor.execute(f"SELECT SUM(Transaction_count), AVG(Transaction_count) FROM aggregated_transaction WHERE Year = '{in_tr_yr}' AND Quarter = '{in_tr_qtr}' AND Transaction_type = '{in_tr_tr_typ}';")
-        in_tr_co_qry_rslt = cursor.fetchall()
-        df_in_tr_co_qry_rslt = pd.DataFrame(np.array(in_tr_co_qry_rslt), columns=['Total','Average'])
-        df_in_tr_co_qry_rslt1 = df_in_tr_co_qry_rslt.set_index(['Average'])
-
-        # --------- / Output  /  -------- #
-
-        # ------    /  Geo visualization dashboard for Transaction /   ---- #
-        # Drop a State column from df_in_tr_tab_qry_rslt
-        df_in_tr_tab_qry_rslt.drop(columns=['State'], inplace=True)
-        # Clone the gio data
+        df_query_result.drop(columns=['State'], inplace=True)
         url = "https://gist.githubusercontent.com/jbrobst/56c13bbbf9d97d187fea01ca62ea5112/raw/e388c4cae20aa53cb5090210a42ebb9b765c0a36/india_states.geojson"
         response = requests.get(url)
         data1 = json.loads(response.content)
