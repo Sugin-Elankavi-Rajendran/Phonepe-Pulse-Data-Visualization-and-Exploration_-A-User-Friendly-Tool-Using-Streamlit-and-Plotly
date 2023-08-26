@@ -7,6 +7,7 @@ import json
 import requests
 import subprocess
 from path import geo_data
+import plotly
 import plotly.express as px
 
 ################
@@ -78,78 +79,70 @@ if option == 'All of India':
     fig_tra = px.choropleth(
         df_transaction,
         geojson= geo_data,
-        featureidkey='properties.ST_NM',locations='State',color='Transaction_amount',color_continuous_scale='thermal',title = 'Transaction Analysis')
+        featureidkey='properties.ST_NM',
+        locations='State',
+        color='Transaction_amount',
+        color_continuous_scale='thermal',
+        title = 'Transaction Analysis'
+    )
     fig_tra.update_geos(fitbounds="locations", visible=False)
-    fig_tra.update_layout(title_font=dict(size=33),title_font_color='#6739b7', height=800)
+    fig_tra.update_layout(title_font=dict(size=33),title_font_color='#fdfcff', height=800)
     st.plotly_chart(fig_tra,use_container_width=True)
 
-    # ---------   /   All India Transaction Analysis Bar chart  /  ----- #
-    df_in_tr_tab_qry_rslt1['State'] = df_in_tr_tab_qry_rslt1['State'].astype(str)
-    df_in_tr_tab_qry_rslt1['Transaction_amount'] = df_in_tr_tab_qry_rslt1['Transaction_amount'].astype(float)
-    df_in_tr_tab_qry_rslt1_fig = px.bar(df_in_tr_tab_qry_rslt1 , x = 'State', y ='Transaction_amount', color ='Transaction_amount', color_continuous_scale = 'thermal', title = 'Transaction Analysis Chart', height = 700,)
-    df_in_tr_tab_qry_rslt1_fig.update_layout(title_font=dict(size=33),title_font_color='#6739b7')
-    st.plotly_chart(df_in_tr_tab_qry_rslt1_fig,use_container_width=True)
+    modified_df_query_result['State'] = modified_df_query_result['State'].astype(str)
+    modified_df_query_result['Transaction_amount'] = modified_df_query_result['Transaction_amount'].astype(float)
+    modified_df_query_result_fig = px.bar(modified_df_query_result , x = 'State', y ='Transaction_amount', color ='Transaction_amount', color_continuous_scale = 'thermal', title = 'Transaction Analysis Chart', height = 700,)
+    modified_df_query_result_fig.update_layout(title_font=dict(size=33),title_font_color='#fdfcff')
+    st.plotly_chart(modified_df_query_result_fig,use_container_width=True)
 
-    # -------  /  All India Total Transaction calculation Table   /   ----  #
-    st.header(':violet[Total calculation]')
+    st.header('Total calculation')
 
     col4, col5 = st.columns(2)
     with col4:
         st.subheader('Transaction Analysis')
-        st.dataframe(df_in_tr_anly_tab_qry_rslt1)
+        st.dataframe(modified_df_table_query_result)
     with col5:
         st.subheader('Transaction Amount')
-        st.dataframe(df_in_tr_am_qry_rslt1)
+        st.dataframe(modified_df_amount_query_result)
         st.subheader('Transaction Count')
-        st.dataframe(df_in_tr_co_qry_rslt1)
+        st.dataframe(modified_df_count_query_result)
     
     with tab2:
-        
         col1, col2 = st.columns(2)
         with col1:
             in_us_yr = st.selectbox('**Select Year**', ('2018','2019','2020','2021','2022'),key='in_us_yr')
         with col2:
             in_us_qtr = st.selectbox('**Select Quarter**', ('1','2','3','4'),key='in_us_qtr')
         
-        # SQL Query
-
-        # User Analysis Bar chart query
-        cursor.execute(f"SELECT State, SUM(User_Count) FROM aggregated_user WHERE Year = '{in_us_yr}' AND Quarter = '{in_us_qtr}' GROUP BY State;")
+        cursor.execute(f"SELECT State, SUM(User_Count) FROM aggregated_users WHERE Year = '{in_us_yr}' AND Quarter = '{in_us_qtr}' GROUP BY State;")
         in_us_tab_qry_rslt = cursor.fetchall()
         df_in_us_tab_qry_rslt = pd.DataFrame(np.array(in_us_tab_qry_rslt), columns=['State', 'User Count'])
         df_in_us_tab_qry_rslt1 = df_in_us_tab_qry_rslt.set_index(pd.Index(range(1, len(df_in_us_tab_qry_rslt)+1)))
 
-        # Total User Count table query
-        cursor.execute(f"SELECT SUM(User_Count), AVG(User_Count) FROM aggregated_user WHERE Year = '{in_us_yr}' AND Quarter = '{in_us_qtr}';")
+        cursor.execute(f"SELECT SUM(User_Count), AVG(User_Count) FROM aggregated_users WHERE Year = '{in_us_yr}' AND Quarter = '{in_us_qtr}';")
         in_us_co_qry_rslt = cursor.fetchall()
         df_in_us_co_qry_rslt = pd.DataFrame(np.array(in_us_co_qry_rslt), columns=['Total','Average'])
         df_in_us_co_qry_rslt1 = df_in_us_co_qry_rslt.set_index(['Average'])
 
-        # ---------  /  Output  /  -------- #
-
-        # ------    /  Geo visualization dashboard for User  /   ---- #
-        # Drop a State column from df_in_us_tab_qry_rslt
         df_in_us_tab_qry_rslt.drop(columns=['State'], inplace=True)
-        # Clone the gio data
         url = geo_data
         response = requests.get(url)
         data2 = json.loads(response.content)
-        # Extract state names and sort them in alphabetical order
         state_names_use = [feature['properties']['ST_NM'] for feature in data2['features']]
         state_names_use.sort()
-        # Create a DataFrame with the state names column
         df_state_names_use = pd.DataFrame({'State': state_names_use})
-        # Combine the Gio State name with df_in_tr_tab_qry_rslt
         df_state_names_use['User Count']=df_in_us_tab_qry_rslt
-        # convert dataframe to csv file
         df_state_names_use.to_csv('State_user.csv', index=False)
-        # Read csv
         df_use = pd.read_csv('State_user.csv')
-        # Geo plot
         fig_use = px.choropleth(
             df_use,
             geojson=geo_data,
-            featureidkey='properties.ST_NM',locations='State',color='User Count',color_continuous_scale='thermal',title = 'User Analysis')
+            featureidkey='properties.ST_NM',
+            locations='State',
+            color='User Count',
+            color_continuous_scale='thermal',
+            title = 'User Analysis'
+        )
         fig_use.update_geos(fitbounds="locations", visible=False)
         fig_use.update_layout(title_font=dict(size=33),title_font_color='#6739b7', height=800)
         st.plotly_chart(fig_use,use_container_width=True)
