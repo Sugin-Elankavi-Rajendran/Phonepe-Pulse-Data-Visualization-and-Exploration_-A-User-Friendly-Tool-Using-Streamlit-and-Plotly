@@ -9,6 +9,7 @@ import subprocess
 from path import geo_data
 import plotly
 import plotly.express as px
+from path import logo_path
 
 ################
 
@@ -24,6 +25,26 @@ cursor = connection.cursor()
 #####################
 
 st.set_page_config(layout='wide')
+st.markdown(
+    f"""
+    <style>
+        .logo-container {{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }}
+        .logo-img {{
+            max-width: 200px;
+            height: auto;
+        }}
+    </style>
+    <div class="logo-container">
+        <img src="{logo_path}" alt="Logo" class="logo-img">
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 st.header('Phonepe Data')
 st.write("The following data is from the year 2018-2022:")
 
