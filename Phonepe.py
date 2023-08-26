@@ -287,24 +287,17 @@ else:
     with tab6:
         top_us_yr = st.selectbox('**Select Year**', ('2018','2019','2020','2021','2022'),key='top_us_yr')
 
-        # SQL Query
-
-        # Top User Analysis bar chart query
         cursor.execute(f"SELECT State, SUM(Registered_User) AS Top_user FROM top_user WHERE Year='{top_us_yr}' GROUP BY State ORDER BY Top_user DESC LIMIT 10;")
         top_us_tab_qry_rslt = cursor.fetchall()
         df_top_us_tab_qry_rslt = pd.DataFrame(np.array(top_us_tab_qry_rslt), columns=['State', 'Total User count'])
         df_top_us_tab_qry_rslt1 = df_top_us_tab_qry_rslt.set_index(pd.Index(range(1, len(df_top_us_tab_qry_rslt)+1)))
 
-        # ---------  /  Output  /  -------- #
-
-        # -----   /   All India User Analysis Bar chart   /   ----- #
         df_top_us_tab_qry_rslt1['State'] = df_top_us_tab_qry_rslt1['State'].astype(str)
         df_top_us_tab_qry_rslt1['Total User count'] = df_top_us_tab_qry_rslt1['Total User count'].astype(float)
         df_top_us_tab_qry_rslt1_fig = px.bar(df_top_us_tab_qry_rslt1 , x = 'State', y ='Total User count', color ='Total User count', color_continuous_scale = 'thermal', title = 'Top User Analysis Chart', height = 600,)
         df_top_us_tab_qry_rslt1_fig.update_layout(title_font=dict(size=33),title_font_color='#fdfcff')
         st.plotly_chart(df_top_us_tab_qry_rslt1_fig,use_container_width=True)
 
-        # -----   /   All India Total Transaction calculation Table   /   ----- #
         st.header('Total calculation')
         st.subheader('Total User Analysis')
         st.dataframe(df_top_us_tab_qry_rslt1)
