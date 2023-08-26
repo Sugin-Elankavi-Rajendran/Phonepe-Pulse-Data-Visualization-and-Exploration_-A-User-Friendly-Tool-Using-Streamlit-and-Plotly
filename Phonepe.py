@@ -252,12 +252,12 @@ elif option =='State wise':
         with col6:
             st_us_yr = st.selectbox('**Select Year**', ('2018','2019','2020','2021','2022'),key='st_us_yr')
         
-        cursor.execute(f"SELECT Quarter, SUM(User_Count) FROM aggregated_user WHERE State = '{st_us_st}' AND Year = '{st_us_yr}' GROUP BY Quarter;")
+        cursor.execute(f"SELECT Quarter, SUM(User_Count) FROM aggregated_users WHERE State = '{st_us_st}' AND Year = '{st_us_yr}' GROUP BY Quarter;")
         st_us_tab_qry_rslt = cursor.fetchall()
         df_st_us_tab_qry_rslt = pd.DataFrame(np.array(st_us_tab_qry_rslt), columns=['Quarter', 'User Count'])
         df_st_us_tab_qry_rslt1 = df_st_us_tab_qry_rslt.set_index(pd.Index(range(1, len(df_st_us_tab_qry_rslt)+1)))
 
-        cursor.execute(f"SELECT SUM(User_Count), AVG(User_Count) FROM aggregated_user WHERE State = '{st_us_st}' AND Year = '{st_us_yr}';")
+        cursor.execute(f"SELECT SUM(User_Count), AVG(User_Count) FROM aggregated_users WHERE State = '{st_us_st}' AND Year = '{st_us_yr}';")
         st_us_co_qry_rslt = cursor.fetchall()
         df_st_us_co_qry_rslt = pd.DataFrame(np.array(st_us_co_qry_rslt), columns=['Total','Average'])
         df_st_us_co_qry_rslt1 = df_st_us_co_qry_rslt.set_index(['Average'])
