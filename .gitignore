@@ -1,4 +1,6 @@
 path.py
+State_trans.csv
+State_user.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -7,6 +9,7 @@ __pycache__/
 
 # C extensions
 *.so
+*.csv
 
 # Distribution / packaging
 bin/
