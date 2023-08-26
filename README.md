@@ -4,8 +4,8 @@ This repository contains a set of Python scripts that perform data processing an
 
 ## Contents
 
-- `main.py`: The main script that performs the data processing tasks.
-- `app.py`: The Streamlit web application for interactive data visualization.
+- `data_cloning_and_processing.py`: The main script that performs the data processing tasks.
+- `Phonepe.py`: The Streamlit web application for interactive data visualization.
 - `path.py`: A module containing paths to various data directories.
 - `logo.png`: The logo image used in the Streamlit app.
 - `geo_data.json`: GeoJSON data for mapping.
@@ -18,7 +18,7 @@ This repository contains a set of Python scripts that perform data processing an
    ```bash
    pip install -r requirements.txt
    ```
-3. Make sure you have MySQL installed and running. Update the MySQL database connection parameters in `main.py` and `app.py` as needed.
+3. Make sure you have MySQL installed and running. Update the MySQL database connection parameters in `data_cloning_and_processing.py` and `Phonepe.py` as needed.
 
 ## Usage
 
@@ -45,10 +45,5 @@ The Streamlit web application provides various interactive visualizations of Pho
 
 The raw data for this project is expected to be stored in JSON files. These JSON files are processed to extract relevant information and create visualizations.
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
 
 Please make sure to update the paths, database credentials, and other settings as needed to fit your environment before running the scripts and the Streamlit app.
